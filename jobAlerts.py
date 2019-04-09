@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import urllib2
 import time
 import sqlite3
+from dto import Job_Post
 DOMAIN = "https://edpost.stcloudstate.edu"
 CONST_URL = DOMAIN+"/?page="
 FILTER_URL = "&submit=Search+Entire+Posting&currentFilter="
