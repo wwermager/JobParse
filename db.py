@@ -14,5 +14,5 @@ def insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent):
                        ,(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent,))
     db.commit()
 
-def close():
+def close_db():
     db.close()
