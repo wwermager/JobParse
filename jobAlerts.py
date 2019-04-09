@@ -2,17 +2,16 @@ from bs4 import BeautifulSoup
 import urllib2
 import time
 import sqlite3
-from dto import Job_Post
+from db import insert,close_db
+
 DOMAIN = "https://edpost.stcloudstate.edu"
 CONST_URL = DOMAIN+"/?page="
 FILTER_URL = "&submit=Search+Entire+Posting&currentFilter="
 SEARCH_STRINGS = ["english+teacher"] #,"language+arts","english+language+arts","language+arts+teacher"]
-conn = sqlite3.connect('test.db')
-c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS just_links (ID INTEGER PRIMARY KEY AUTOINCREMENT, url text)''')
 jobs = []
 all_links = []
 new_list = []
+
 print "--------------------------------------------------------"
 
 def get_soup(url):
@@ -60,10 +59,4 @@ for keyword in SEARCH_STRINGS:
     get_jobs(keyword)
 print "Total jobs found: ",len(all_links)
 for link in all_links:
-    #print str(link)
     print get_application(link)
-    c.execute("INSERT INTO just_links (url) values (?)",(link,))
-conn.commit()
-conn.close()
-#uniq_links = set(all_links)
-#print len(uniq_jobs)," UNIQUE JOB LINKS!"
