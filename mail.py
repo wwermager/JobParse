@@ -25,33 +25,33 @@ Subject: New Job Postings: {date}
 
 <p>Check out these postings you may have not have seen yet :)</p>
 <h2>Jobs With Applitrack</h2>
-<table>
-    <tr>
-        <th>EdPost Link</th>
-        <th>AppliTrack Link</th>
-        <th>AppliTrack ID</th>
-        <th>Post DT</th>
-        <th>Exp DT</th>
+<table style="width:100%;border:1px solid black">
+    <tr style="width:100%;border:1px solid black">
+        <th style="width:100%;border:1px solid black">EdPost Link</th>
+        <th style="width:100%;border:1px solid black">AppliTrack Link</th>
+        <th style="width:100%;border:1px solid black">AppliTrack ID</th>
+        <th style="width:100%;border:1px solid black">Post DT</th>
+        <th style="width:100%;border:1px solid black">Exp DT</th>
     </tr>
-    <tr>
-        <td><a href="https://edpost.stcloudstate.edu/EdPost/displayrecord?\
+    <tr style="width:100%;border:1px solid black">
+        <td style="width:100%;border:1px solid black"><a href="https://edpost.stcloudstate.edu/EdPost/displayrecord?\
         postID=265025&submit=Search%20Entire%20Posting&KeyWordString=English\
         %20Teacher%20-%20Janesville%20Waldorf">EdPost Link</a>
         </td>
-        <td><a href="https://www.applitrack.com/jwp/OnlineApp/JobPostings/\
+        <td style="width:100%;border:1px solid black"><a href="https://www.applitrack.com/jwp/OnlineApp/JobPostings/\
         View.asp?AppliTrackJobId=249">AppliTrack</a></td>
-        <td>a</td><td>date1</td>
-        <td>date2</td>
+        <td style="width:100%;border:1px solid black">a</td><td>date1</td>
+        <td style="width:100%;border:1px solid black">date2</td>
     </tr>
 </table>
 </br>
 </br>
 <h2>Jobs Without Applitrack</h2>
 <table>
-    <tr>
-        <th>EdPost Link</th>
-        <th>Post DT</th>
-        <th>Exp DT</th>
+    <tr style="width:100%;border:1px solid black">
+        <th style="width:100%;border:1px solid black">EdPost Link</th>
+        <th style="width:100%;border:1px solid black">Post DT</th>
+        <th style="width:100%;border:1px solid black">Exp DT</th>
     </tr>
 </table>
 """.format(usr=usr,rcvr=rcvr,date=date)
