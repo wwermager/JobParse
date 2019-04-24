@@ -6,11 +6,17 @@ configs = [line.rstrip('\n') for line in open('configs')]
 usr = configs[0]
 pwd = configs[1]
 rcvr = configs[2]
-
-job = get_records(0) #records that have not been sent
-
-date = datetime.datetime.now().date()
 receivers = [rcvr]
+date = datetime.datetime.now().date()
+posts = []
+jobs = get_records(0) #list of records that have not been sent
+print(len(jobs))
+for job in jobs:
+    post_id = job[0]
+    posts.append(post_id)
+    url = job[1]
+    # add for all needed elements
+
 message = """From: JobUpdates <{usr}>
 To: Dana <{rcvr}>
 MIME-Version: 1.0
@@ -19,25 +25,6 @@ Subject: New Job Postings: {date}
 
 <p>Check out these postings you may have not have seen yet :)</p>
 <h2>Jobs With Applitrack</h2>
-<head>
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
-</head>
 <table>
     <tr>
         <th>EdPost Link</th>
@@ -46,7 +33,16 @@ Subject: New Job Postings: {date}
         <th>Post DT</th>
         <th>Exp DT</th>
     </tr>
-    <tr>{appli records}</tr>
+    <tr>
+        <td><a href="https://edpost.stcloudstate.edu/EdPost/displayrecord?\
+        postID=265025&submit=Search%20Entire%20Posting&KeyWordString=English\
+        %20Teacher%20-%20Janesville%20Waldorf">EdPost Link</a>
+        </td>
+        <td><a href="https://www.applitrack.com/jwp/OnlineApp/JobPostings/\
+        View.asp?AppliTrackJobId=249">AppliTrack</a></td>
+        <td>a</td><td>date1</td>
+        <td>date2</td>
+    </tr>
 </table>
 </br>
 </br>
@@ -57,10 +53,9 @@ Subject: New Job Postings: {date}
         <th>Post DT</th>
         <th>Exp DT</th>
     </tr>
-    <tr>{non-appli records}</tr>
 </table>
+""".format(usr=usr,rcvr=rcvr,date=date)
 
-""".format(**locals())
 try:
     smtpObj = smtplib.SMTP('localhost',1025)
     smtpObj.login(usr,pwd)
@@ -70,3 +65,22 @@ except smtplib.SMTPException:
     print "Error: unable to send email"
     print traceback.format_exc()
 
+#<head>
+#    <style>
+#        table {
+#            font-family: arial, sans-serif;
+#            border-collapse: collapse;
+#            width: 100%;
+#        }
+#
+#        td, th {
+#            border: 1px solid #dddddd;
+#            text-align: left;
+#            padding: 8px;
+#        }
+#
+#        tr:nth-child(even) {
+#            background-color: #dddddd;
+#        }
+#    </style>
+#</head>

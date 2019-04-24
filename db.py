@@ -29,3 +29,6 @@ def get_records(is_sent=2):
 
 def close_db():
     db.close()
+
+
+# Add applitrack and non-applitrack filters to select statments
