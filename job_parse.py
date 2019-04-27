@@ -3,11 +3,12 @@ import urllib2
 import time
 import sqlite3
 from db import insert,update_sent_status,get_records,close_db
-
+import random
 DOMAIN = "https://edpost.stcloudstate.edu"
 CONST_URL = DOMAIN+"/?page="
 FILTER_URL = "&submit=Search+Entire+Posting&currentFilter="
-SEARCH_STRINGS = ["English+Teacher+-+Janesville+Waldorf"]
+SEARCH_STRINGS = ["english+teacher","language+arts","english+language+arts","language+arts+teacher"]
+#["English+Teacher+-+Janesville+Waldorf"]
 #["english+teacher","language+arts","english+language+arts","language+arts+teacher"]
 jobs = []
 all_jobs= []
@@ -17,8 +18,9 @@ new_list = []
 Retruns soup obj
 '''
 def get_soup(url):
-    print "Trying url:\n",url
-    time.sleep(5)
+    wait = random.randint(5,16)
+    print "Wait ",wait,"sec... Trying url:\n",url
+    time.sleep(wait)
     html_doc = urllib2.urlopen(url)
     soup = BeautifulSoup(html_doc,'html.parser')
     return soup
@@ -29,6 +31,7 @@ def has_next_page(soup):
     if len(soup.find_all('li',{"class":"PagedList-skipToNext"}))==0:
         return False
     else:
+        print "Has additional page"
         return True
 '''
 returns edpost links of all jobs listed for search criteria passed
@@ -65,6 +68,8 @@ def get_post_id(edlink):
 get applitrack id app_id
 '''
 def get_app_id(applink):
+    if applink == None:
+        return None
     return applink.split("=")[1]
 '''
 get app post_dt & exp_dt
@@ -87,6 +92,8 @@ for url in all_jobs:
     post_dt = get_dates(job_soup)[0]
     exp_dt = get_dates(job_soup)[1]
     email_sent = 0
+    print\
+    "insert\n",post_id,"\n",url,"\n",app_url,"\n",app_id,"\n",post_dt,"\n",exp_dt,"\n",email_sent
     insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent)
 
 close_db()
