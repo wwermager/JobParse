@@ -23,9 +23,12 @@ def get_records(is_sent=2):
     elif is_sent == 1:
         cursor.execute("SELECT * FROM job_postings WHERE email_sent = 1")
     else:
-        cursor.execute("SELECT * FROM job_postings")
+        cursor.execute("SELECT post_id FROM job_postings")
     records = cursor.fetchall()
     return records
 
 def close_db():
     db.close()
+
+
+# Add applitrack and non-applitrack filters to select statments
