@@ -28,7 +28,6 @@ all_jobs = []
 
 # job ids currently in DB
 id_list = [row[0] for row in get_records()]
-print id_list
 
 # Retruns soup obj
 def get_soup(url):
@@ -115,6 +114,6 @@ for url in all_jobs:
 
         insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent)
     else:
-        print "Skipping job ", post_id,": ",url
+        print "Skipping job ",post_id,": ",url
 
 close_db()

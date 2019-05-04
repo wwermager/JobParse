@@ -1,6 +1,6 @@
 import sqlite3
 
-db = sqlite3.connect('test.db')
+db = sqlite3.connect('jobs.db')
 cursor = db.cursor()
 cursor.execute('''CREATE TABLE IF NOT EXISTS job_postings (post_id INTEGER
               PRIMARY KEY, url text NOT NULL, app_url text, app_id
