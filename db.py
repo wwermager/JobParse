@@ -13,16 +13,26 @@ def insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent):
                        VALUES (?,?,?,?,?,?,?)" \
                        ,(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent,))
     db.commit()
+
 def update_sent_status(post_id):
     cursor.execute("UPDATE job_postings SET email_sent = 1 \
-                    WHERE post_id = ?",(post_id))
+                    WHERE post_id = ?",(post_id,))
     db.commit()
-def get_records(is_sent=2):
-    if is_sent == 0:
-        cursor.execute("SELECT * FROM job_postings WHERE email_sent = 0")
-    elif is_sent == 1:
-        cursor.execute("SELECT * FROM job_postings WHERE email_sent = 1")
-    else:
+
+def get_records(is_sent=99):
+    if is_sent == 0: # Select non-applitrack postings email NOT sent
+        cursor.execute("SELECT * FROM job_postings \
+                       WHERE app_id IS NULL \
+                       AND email_sent = 0")
+    elif is_sent == 1: # Select non-applitrack postings email sent
+        cursor.execute("SELECT * FROM job_postings \
+                       WHERE app_id IS NULL \
+                       AND email_sent = 1")
+    elif is_sent == 2: # Select unique applitrack postings
+        cursor.execute("SELECT * FROM job_postings \
+                       WHERE app_id NOT NULL \
+                       GROUP BY app_id")
+    else: # Default get all post ids
         cursor.execute("SELECT post_id FROM job_postings")
     records = cursor.fetchall()
     return records
@@ -30,5 +40,3 @@ def get_records(is_sent=2):
 def close_db():
     db.close()
 
-
-# Add applitrack and non-applitrack filters to select statments
