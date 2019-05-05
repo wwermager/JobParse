@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 '''
 Search MN teacher job postings on St. Cloud State University's EdPost Website.
 Job postings are parsed for relevant information and inserted into a sqlite DB
