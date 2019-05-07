@@ -32,6 +32,9 @@ def get_records(is_sent=99):
         cursor.execute("SELECT * FROM job_postings \
                        WHERE app_id NOT NULL \
                        GROUP BY app_id")
+    elif is_sent == 3: # Select all applitrack postings
+        cursor.execute("SELECT * FROM job_postings \
+                       WHERE app_id NOT NULL")
     else: # Default get all post ids
         cursor.execute("SELECT post_id FROM job_postings")
     records = cursor.fetchall()

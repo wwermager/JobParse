@@ -9,18 +9,20 @@ rcvr = configs[2]
 receivers = [rcvr]
 date = datetime.datetime.now().date()
 posts = []
-jobs = get_records(0) #list of records that have not been sent
-print(len(jobs))
-for job in jobs:
-    post_id = job[0]
-    posts.append(post_id)
-    url = job[1]
-    # add for all needed elements
+non_appli = get_records(0)
+appli = get_records(2)
+all_appli = get_records(3)
 
 #TODO get all records that have not been sent yet
 # if new records have applitrack ID verify no previous records with same ID
 # have been sent
 #  if it has been sent update the record is_sent=1
+
+print "Non applitrack ...",len(non_appli)
+print "Applitrack unique ...",len(appli)
+print "All Applitrack ...",len(all_appli)
+
+
 message = """From: JobUpdates <{usr}>
 To: Dana <{rcvr}>
 MIME-Version: 1.0
@@ -58,31 +60,11 @@ Subject: New Job Postings: {date}
 </table>
 """.format(usr=usr,rcvr=rcvr,date=date)
 
-try:
-    smtpObj = smtplib.SMTP('localhost',1025)
-    smtpObj.login(usr,pwd)
-    smtpObj.sendmail(usr, receivers, message)
-    print "Successfully sent email"
-except smtplib.SMTPException:
-    print "Error: unable to send email"
-    print traceback.format_exc()
-
-#<head>
-#    <style>
-#        table {
-#            font-family: arial, sans-serif;
-#            border-collapse: collapse;
-#            width: 100%;
-#        }
-#
-#        td, th {
-#            border: 1px solid #dddddd;
-#            text-align: left;
-#            padding: 8px;
-#        }
-#
-#        tr:nth-child(even) {
-#            background-color: #dddddd;
-#        }
-#    </style>
-#</head>
+#try:
+#    smtpObj = smtplib.SMTP('localhost',1025)
+#    smtpObj.login(usr,pwd)
+#    smtpObj.sendmail(usr, receivers, message)
+#    print "Successfully sent email"
+#except smtplib.SMTPException:
+#    print "Error: unable to send email"
+#    print traceback.format_exc()
