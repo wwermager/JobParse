@@ -86,6 +86,10 @@ def get_dates(soup):
     exp_dt = soup.find('p',{"class":"expire"})
     return post_dt.text,exp_dt.text
 
+#TODO get job description
+def get_desc(soup):
+    desc = soup.find("h3",{"class":"title"})
+    return desc.text
 
 # gets all job links for a particular search string
 for keyword in SEARCH_STRINGS:
@@ -101,19 +105,21 @@ for url in all_jobs:
         job_soup = get_soup(url)
         app_url = get_app_url(job_soup)
         app_id = get_app_id(app_url)
+        desc = get_desc(job_soup)
         post_dt = get_dates(job_soup)[0]
         exp_dt = get_dates(job_soup)[1]
         email_sent = 0
 
-        print "insert ",post_id,"\n",\
+        print "insert... \n ",post_id,"\n",\
                 url,"\n",\
                 app_url,"\n",\
                 app_id,"\n",\
+                desc,"\n",\
                 post_dt,"\n",\
                 exp_dt,"\n",\
                 email_sent
 
-        insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent)
+        insert(post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent)
     else:
         print "Skipping job... ",post_id
 
