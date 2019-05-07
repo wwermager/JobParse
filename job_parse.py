@@ -33,7 +33,7 @@ id_list = [row[0] for row in get_records()]
 # Retruns soup obj
 def get_soup(url):
     wait = random.randint(5,10)
-    print "Wait ",wait,"sec... Trying url:\n",url
+    print "Wait ",wait,"sec... \nTrying url...\n",url
     time.sleep(wait)
     html_doc = urllib2.urlopen(url)
     soup = BeautifulSoup(html_doc,'html.parser')
@@ -44,7 +44,7 @@ def has_next_page(soup):
     if len(soup.find_all('li',{"class":"PagedList-skipToNext"}))==0:
         return False
     else:
-        print "Has additional page"
+        print "Has additional page..."
         return True
 
 # returns edpost links of all jobs listed for search criteria passed
@@ -58,7 +58,7 @@ def get_jobs(search_str):
         for job in jobs:
             link = DOMAIN + job['href']
             all_jobs.append(link)
-        print len(jobs)," jobs on page ",page_num
+        print len(jobs)," jobs on page... ",page_num
         page_num += 1
         url=CONST_URL+str(page_num)+FILTER_URL+search_str
     return all_jobs
@@ -96,7 +96,7 @@ for url in all_jobs:
     post_id = int(get_post_id(url))
 
     if post_id not in id_list:
-        print "Getting new job: ",post_id
+        print "Getting new job... ",post_id
 
         job_soup = get_soup(url)
         app_url = get_app_url(job_soup)
@@ -115,6 +115,6 @@ for url in all_jobs:
 
         insert(post_id,url,app_url,app_id,post_dt,exp_dt,email_sent)
     else:
-        print "Skipping job ",post_id,": ",url
+        print "Skipping job... ",post_id
 
 close_db()

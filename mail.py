@@ -17,6 +17,10 @@ for job in jobs:
     url = job[1]
     # add for all needed elements
 
+#TODO get all records that have not been sent yet
+# if new records have applitrack ID verify no previous records with same ID
+# have been sent
+#  if it has been sent update the record is_sent=1
 message = """From: JobUpdates <{usr}>
 To: Dana <{rcvr}>
 MIME-Version: 1.0
