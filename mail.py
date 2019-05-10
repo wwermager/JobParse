@@ -45,9 +45,17 @@ for row in ed_posts:
             +row[6]\
             +"</td></tr>"
 
-if len(uniq_appli) == 0: # first run only send unique
+if len(all_appli_sent) == 0: # first run only send unique
     #TODO for each unique post generate table string
     for row in uniq_appli:
+#        print row[0]
+#        print row[1]
+#        print row[2]
+#        print row[3]
+#        print row[4]
+#        print row[5]
+#        print row[6]
+#        print row[7]
         appli_tbl_rows += \
             "<tr style=\"border:1px solid black\"><td style=\"border:1px solid black\">"\
             +str(row[0])\

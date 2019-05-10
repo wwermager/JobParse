@@ -23,6 +23,7 @@ FILTER_URL = "&submit=Search+Entire+Posting&currentFilter="
 SEARCH_STRINGS = ["english+teacher",\
                   "language+arts",\
                   "english+language+arts",\
+                  "languagearts",\
                   "language+arts+teacher"]
 jobs = []
 all_jobs = []
