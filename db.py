@@ -9,14 +9,18 @@ db.commit()
 
 def insert(post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent):
     cursor.execute("INSERT OR IGNORE INTO job_postings \
-                       (post_id,url,app_url,app_id,post_dt,exp_dt,email_sent) \
+                       (post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent) \
                        VALUES (?,?,?,?,?,?,?,?)" \
                        ,(post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent,))
     db.commit()
 
-def update_sent_status(post_id):
-    cursor.execute("UPDATE job_postings SET email_sent = 1 \
-                    WHERE post_id = ?",(post_id,))
+def update_sent_status(post_id=99):
+    if post_id == 0: # update based on app_id
+        cursor.execute("UPDATE job_postings SET email_sent = 1 \
+                     WHERE app_id = ?",(app_id,))
+    else: # update based on post_id
+        cursor.execute("UPDATE job_postings SET email_sent = 1 \
+                       WHERE post_id = ?",(post_id,))
     db.commit()
 
 def get_records(is_sent=99):
@@ -25,14 +29,22 @@ def get_records(is_sent=99):
                        WHERE app_id IS NULL \
                        AND email_sent = 0")
     elif is_sent == 1: # Select non-applitrack postings email sent
-        cursor.execute("SELECT * FROM job_postings \
+        cursor.execute("SELECT post_id FROM job_postings \
                        WHERE app_id IS NULL \
                        AND email_sent = 1")
     elif is_sent == 2: # Select unique applitrack postings
         cursor.execute("SELECT * FROM job_postings \
                        WHERE app_id NOT NULL \
                        GROUP BY app_id")
-    elif is_sent == 3: # Select all applitrack postings
+    elif is_sent == 3: # Select all applitrack post email NOT sent
+        cursor.execute("SELECT * FROM job_postings \
+                       WHERE app_id NOT NULL \
+                       AND email_sent = 0")
+    elif is_sent == 4: # Select app_id for all sent applitrack post
+        cursor.execute("SELECT app_id FROM job_postings \
+                       WHERE app_id NOT NULL \
+                       AND email_sent = 1")
+    elif is_sent == 5: # Select all applitrack postings
         cursor.execute("SELECT * FROM job_postings \
                        WHERE app_id NOT NULL")
     else: # Default get all post ids

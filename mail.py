@@ -9,9 +9,12 @@ rcvr = configs[2]
 receivers = [rcvr]
 date = datetime.datetime.now().date()
 posts = []
-non_appli = get_records(0)
-appli = get_records(2)
-all_appli = get_records(3)
+ed_posts = get_records(0) # * non-appli and  unsent
+ed_posts_sent = get_records(1) # post_id
+uniq_appli = get_records(2) # unique app_id's
+all_appli = get_records(3) # all appli and unsent
+all_appli_sent = get_records(4) # app_id
+
 
 #TODO get all records that have not been sent yet
 # if new records have applitrack ID verify no previous records with same ID
@@ -21,6 +24,7 @@ all_appli = get_records(3)
 print "Non applitrack ...",len(non_appli)
 print "Applitrack unique ...",len(appli)
 print "All Applitrack ...",len(all_appli)
+
 
 
 message = """From: JobUpdates <{usr}>

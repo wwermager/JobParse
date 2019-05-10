@@ -86,7 +86,7 @@ def get_dates(soup):
     exp_dt = soup.find('p',{"class":"expire"})
     return post_dt.text,exp_dt.text
 
-#TODO get job description
+# get job description
 def get_desc(soup):
     desc = soup.find("h3",{"class":"title"})
     return desc.text
