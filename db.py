@@ -14,13 +14,13 @@ def insert(post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent):
                        ,(post_id,url,app_url,app_id,desc,post_dt,exp_dt,email_sent,))
     db.commit()
 
-def update_sent_status(post_id=99):
-    if post_id == 0: # update based on app_id
+def update_sent_status(jobid,typ=0):
+    if typ == 1: # update based on app_id
         cursor.execute("UPDATE job_postings SET email_sent = 1 \
-                     WHERE app_id = ?",(app_id,))
+                       WHERE app_id = ?",(jobid,))
     else: # update based on post_id
         cursor.execute("UPDATE job_postings SET email_sent = 1 \
-                       WHERE post_id = ?",(post_id,))
+                       WHERE post_id = ?",(jobid,))
     db.commit()
 
 def get_records(is_sent=99):
@@ -32,9 +32,10 @@ def get_records(is_sent=99):
         cursor.execute("SELECT post_id FROM job_postings \
                        WHERE app_id IS NULL \
                        AND email_sent = 1")
-    elif is_sent == 2: # Select unique applitrack postings
+    elif is_sent == 2: # Select unique unsent applitrack postings
         cursor.execute("SELECT * FROM job_postings \
                        WHERE app_id NOT NULL \
+                       AND email_sent = 0 \
                        GROUP BY app_id")
     elif is_sent == 3: # Select all applitrack post email NOT sent
         cursor.execute("SELECT * FROM job_postings \
@@ -44,9 +45,10 @@ def get_records(is_sent=99):
         cursor.execute("SELECT app_id FROM job_postings \
                        WHERE app_id NOT NULL \
                        AND email_sent = 1")
-    elif is_sent == 5: # Select all applitrack postings
-        cursor.execute("SELECT * FROM job_postings \
-                       WHERE app_id NOT NULL")
+    elif is_sent == 5: # Select app_id unsent applitrack postings
+        cursor.execute("SELECT app_id FROM job_postings \
+                       WHERE app_id NOT NULL \
+                       AND email_sent = 0")
     else: # Default get all post ids
         cursor.execute("SELECT post_id FROM job_postings")
     records = cursor.fetchall()

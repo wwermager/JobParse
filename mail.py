@@ -11,22 +11,22 @@ date = datetime.datetime.now().date()
 posts = []
 edpost_tbl_rows= ""
 appli_tbl_rows= ""
-ed_posts = get_records(0) # * non-appli and  unsent
-ed_posts_ids = [row[0] for row in get_records(0)]
-ed_posts_sent = get_records(1) # post_id
-uniq_appli = get_records(2)
-uniq_appli_ids = [row[0] for row in uniq_appli] # unique app_id's
-all_appli = get_records(3) # all appli and unsent
-appli_ids = [row[0] for row in all_appli]
-all_appli_sent = get_records(4) # app_id
-all_post_ids = get_records() # all post_ids in db
 
-print "Edpost sent ...",len(ed_posts_sent)
-print "Edpost not sent...",len(ed_posts)
-print "Applitrack unique ...",len(uniq_appli_ids)
-print "All Applitrack unsent...",len(all_appli)
-print "All Applitrack sent...",len(all_appli_sent)
-print "Total posts in DB...",len(all_post_ids)
+ed_posts = get_records(0) # * non-appli and  unsent
+ed_posts_ids = [row[0] for row in ed_posts]
+ed_posts_sent = get_records(1) # post_id
+
+uniq_appli = get_records(2) # unique unsent appli
+uniq_appli_ids = [row[0] for row in uniq_appli]
+
+all_appli_sent = [row[0] for row in get_records(4)] # all app_id sent
+all_appli_unsent = [row[0] for row in get_records(5)] # all app_id unsent
+
+
+# No jobs to send so exit
+if len(all_appli_unsent) == 0 and len(ed_posts) == 0:
+    print "Exit: No new unique posts.."
+    exit()
 
 # Transform db data into html table row format
 for row in ed_posts:
@@ -45,17 +45,11 @@ for row in ed_posts:
             +row[6]\
             +"</td></tr>"
 
-if len(all_appli_sent) == 0: # first run only send unique
-    #TODO for each unique post generate table string
-    for row in uniq_appli:
-#        print row[0]
-#        print row[1]
-#        print row[2]
-#        print row[3]
-#        print row[4]
-#        print row[5]
-#        print row[6]
-#        print row[7]
+# Transform applitrack posts into html table
+for row in uniq_appli:
+    # check if sent before - app_id not unique on edpost
+    if row[3] not in all_appli_sent:
+        print "New unique & unsent applitrack post... ",row[3]
         appli_tbl_rows += \
             "<tr style=\"border:1px solid black\"><td style=\"border:1px solid black\">"\
             +str(row[0])\
@@ -76,14 +70,20 @@ if len(all_appli_sent) == 0: # first run only send unique
             +"</td><td style=\"border:1px solid black\">"\
             +row[6]\
             +"</td></tr>"
+    else:
+        print "Skipping applitrack post... ",row[3]
+
 
 message = """From: JobUpdates <{usr}>
-To: Will <{rcvr}>
+To: Dana <{rcvr}>
 MIME-Version: 1.0
 Content-type: text/html; charset=utf-8
 Subject: New Job Postings: {date}
 
 <p>Check out these postings you may have not have seen yet :)</p>
+<p>Searched: english teacher, language arts, english language arts, language
+artarts, and language arts teacher.
+
 <h2>Jobs With Applitrack</h2>
 <table style="width:100%;border:1px solid black">
     <tr style="border:1px solid black">
@@ -112,16 +112,16 @@ Subject: New Job Postings: {date}
 try:
     smtpObj = smtplib.SMTP('localhost',1025)
     smtpObj.login(usr,pwd)
-    smtpObj.sendmail(usr, receivers, message)
-    print "Successfully sent email"
-    # TODO add logic to update sent status
+    smtpObj.sendmail(usr, rcvr, message)
+    print "Successfully sent email... "
+    for post_id in ed_posts_ids:
+        print "Update sent status on EdPost... ",post_id
+        update_sent_status(post_id)
+
+    for app_id in all_appli_unsent:
+        print "Update sent status on Appli... ",app_id
+        update_sent_status(app_id,1)
+
 except smtplib.SMTPException:
-    print "Error: unable to send email"
+    print "ERROR: unable to send email... "
     print traceback.format_exc()
-
-# put in try block
-#    for post_id in ed_posts_ids:
-#        update_sent_status(post_id)
-#    for app_id in appli_ids:
-#        update_sent_status(app_id)
-
