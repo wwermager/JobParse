@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import smtplib
 from db import get_records,update_sent_status
 import traceback
